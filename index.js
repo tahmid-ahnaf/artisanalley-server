@@ -50,6 +50,14 @@ async function run() {
     });
 
 
+    app.get("/itemsByEmail/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { userEmail: email };
+      const cursor = itemCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     
 
     app.post("/items", async (req, res) => {
