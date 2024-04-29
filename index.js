@@ -66,6 +66,37 @@ async function run() {
       res.send(result);
     });
 
+    app.put("/update/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updatedItem = req.body;
+      const updateDoc = {
+        $set: {
+          image: updatedItem.image,
+          item_name: updatedItem.item_name,
+
+          subcategory_Name: updatedItem.subcategory_Name,
+
+          short_description: updatedItem.short_description,
+
+          price: updatedItem.price,
+
+          rating: updatedItem.rating,
+
+          customization: updatedItem.customization,
+
+          processing_time: updatedItem.processing_time,
+
+          stockStatus: updatedItem.stockStatus,
+        },
+      };
+
+      const result = await itemCollection.updateOne(filter,updateDoc,options);
+      res.send(result);
+    });
+
+
     app.delete("/items/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
