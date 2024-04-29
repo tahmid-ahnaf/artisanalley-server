@@ -51,9 +51,20 @@ async function run() {
     });
 
 
-    app.get("/itemsByEmail/:email", async (req, res) => {
+    app.get("/itemsByEmail/:email/:filter", async (req, res) => {
       const email = req.params.email;
-      const query = { userEmail: email };
+      const filter = req.params.filter;
+      let query;
+      if(filter==="All")
+      {
+        query = { userEmail: email };
+      }
+      else if(filter==="Yes" || filter==="No")
+      {
+        query = { userEmail: email , customization: filter};
+      }
+     
+      
       const cursor = itemCollection.find(query);
       const result = await cursor.toArray();
       res.send(result);
