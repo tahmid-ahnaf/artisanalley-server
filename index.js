@@ -34,6 +34,7 @@ async function run() {
     await client.connect();
 
     const itemCollection = client.db("artcraftDB").collection("item");
+    const subCategoryCollection = client.db("artcraftDB").collection("subcategories");
 
     app.get("/items", async (req, res) => {
       const cursor = itemCollection.find();
@@ -54,6 +55,13 @@ async function run() {
       const email = req.params.email;
       const query = { userEmail: email };
       const cursor = itemCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+
+    app.get("/subcategories", async (req, res) => {
+      const cursor = subCategoryCollection.find();
       const result = await cursor.toArray();
       res.send(result);
     });
