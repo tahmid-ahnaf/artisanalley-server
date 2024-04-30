@@ -31,7 +31,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
 
     const itemCollection = client.db("artcraftDB").collection("item");
     const subCategoryCollection = client.db("artcraftDB").collection("subcategories");
@@ -65,6 +65,15 @@ async function run() {
       }
      
       
+      const cursor = itemCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+
+    app.get("/itemsBySubcategory/:subcategoryName", async (req, res) => {
+      const subcategoryName = req.params.subcategoryName;
+      const query = { subcategory_Name: subcategoryName };  
       const cursor = itemCollection.find(query);
       const result = await cursor.toArray();
       res.send(result);
@@ -126,7 +135,7 @@ async function run() {
 
 
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
